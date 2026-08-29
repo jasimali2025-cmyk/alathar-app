@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
   fit: BoxFit.contain,
 ),
 const SizedBox(height: 12),
-                      'يمضي الإنسان... ويبقى أثره',
+                     Text ('يمضي الإنسان... ويبقى أثره',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 4),
