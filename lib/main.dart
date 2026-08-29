@@ -251,10 +251,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Theme.of(context).colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(22),
                 ),
-                child: const Column(
+                child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                   
+                   Image.asset(
+  'assets/alathar-logo.png',
+  height: 150,
+  fit: BoxFit.contain,
+),
+const SizedBox(height: 12),
                       'يمضي الإنسان... ويبقى أثره',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
