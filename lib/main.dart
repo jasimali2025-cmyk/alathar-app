@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() => runApp(const AlAtharApp());
+ Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  await Supabase.initialize(
+    url: 'https://jnvyddardniyuiqhkrhv.supabase.co',
+   anonKey: 'sb_publishable_4Ri0VIeVHlohAL6aRuZ6CA_KdbNVb-j',
+  );
+
+  runApp(const AlAtharApp());
+}
 class AlAtharApp extends StatelessWidget {
   const AlAtharApp({super.key});
 
