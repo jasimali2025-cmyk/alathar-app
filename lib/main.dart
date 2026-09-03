@@ -475,12 +475,83 @@ class PublishScreen extends StatefulWidget {
 class _PublishScreenState extends State<PublishScreen> {
   final titleController = TextEditingController();
   final bodyController = TextEditingController();
+ final emailController = TextEditingController();
+final passwordController = TextEditingController();
   String kind = 'article';
+ bool isLoading = false;
+Future<bool> login() async {
+  try {
+    await Supabase.instance.client.auth.signInWithPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text,
+    );
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+ Future<void> publish() async {
 
+ if (titleController.text.trim().isEmpty ||
+    bodyController.text.trim().isEmpty) {
+  return;
+}
+
+setState(() {
+  isLoading = true;
+});
+  try {
+  final user = Supabase.instance.client.auth.currentUser;
+
+  if (user == null) {
+    final ok = await login();
+    if (!ok) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+  }
+
+  final currentUser = Supabase.instance.client.auth.currentUser;
+
+  await Supabase.instance.client.from('content_items').insert({
+    'kind': kind,
+    'title': titleController.text.trim(),
+    'body': bodyController.text.trim(),
+    'author_name': 'عبد الغفار محسن الركابي',
+    'status': 'published',
+    'published_at': DateTime.now().toIso8601String(),
+    'created_by': currentUser!.id,
+  });
+
+  titleController.clear();
+  bodyController.clear();
+
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم النشر بنجاح')),
+    );
+  }
+} catch (e) {
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('حدث خطأ أثناء النشر: $e')),
+    );
+  }
+} finally {
+  if (mounted) {
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
   @override
   void dispose() {
     titleController.dispose();
     bodyController.dispose();
+   emailController.dispose();
+passwordController.dispose();
     super.dispose();
   }
 
@@ -496,7 +567,24 @@ class _PublishScreenState extends State<PublishScreen> {
           padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
-              DropdownButtonFormField<String>(
+             TextField(
+  controller: emailController,
+  keyboardType: TextInputType.emailAddress,
+  decoration: const InputDecoration(
+    labelText: 'البريد الإلكتروني للمؤلف',
+    border: OutlineInputBorder(),
+  ),
+),
+const SizedBox(height: 16),
+TextField(
+  controller: passwordController,
+  obscureText: true,
+  decoration: const InputDecoration(
+    labelText: 'كلمة المرور',
+    border: OutlineInputBorder(),
+  ),
+),
+const SizedBox(height: 16), DropdownButtonFormField<String>(
                 value: kind,
                 decoration: const InputDecoration(
                   labelText: 'نوع المحتوى',
@@ -533,7 +621,7 @@ class _PublishScreenState extends State<PublishScreen> {
               ),
               const SizedBox(height: 20),
               FilledButton.icon(
-                onPressed: () {},
+                onPressed: isLoading ? null : publish,
                 icon: const Icon(Icons.publish),
                 label: const Text('نشر'),
               ),
