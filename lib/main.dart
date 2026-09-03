@@ -546,6 +546,7 @@ setState(() {
     });
   }
 }
+  }
   @override
   void dispose() {
     titleController.dispose();
