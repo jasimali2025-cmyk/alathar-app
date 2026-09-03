@@ -286,6 +286,20 @@ class _HomeScreenState extends State<HomeScreen> {
     const titles = ['الأثر', 'المقالات', 'الأسئلة', 'الصور', 'المفضلة'];
 
     return Scaffold(
+     floatingActionButton: FloatingActionButton.extended(
+ onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const PublishScreen(),
+    ),
+  );
+},
+  icon: const Icon(Icons.add),
+  label: const Text('نشر جديد'),
+),
+     
+     
       appBar: AppBar(
         toolbarHeight: 78,
         backgroundColor: Colors.white,
@@ -446,6 +460,86 @@ class BookPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PublishScreen extends StatefulWidget {
+  const PublishScreen({super.key});
+
+  @override
+  State<PublishScreen> createState() => _PublishScreenState();
+}
+
+class _PublishScreenState extends State<PublishScreen> {
+  final titleController = TextEditingController();
+  final bodyController = TextEditingController();
+  String kind = 'article';
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    bodyController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('نشر جديد'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: ListView(
+            children: [
+              DropdownButtonFormField<String>(
+                value: kind,
+                decoration: const InputDecoration(
+                  labelText: 'نوع المحتوى',
+                  border: OutlineInputBorder(),
+                ),
+                items: const [
+                  DropdownMenuItem(value: 'book', child: Text('كتاب')),
+                  DropdownMenuItem(value: 'article', child: Text('مقال')),
+                  DropdownMenuItem(value: 'question', child: Text('سؤال')),
+                  DropdownMenuItem(value: 'reading', child: Text('مطالعة')),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() => kind = value);
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(
+                  labelText: 'العنوان',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: bodyController,
+                maxLines: 12,
+                decoration: const InputDecoration(
+                  labelText: 'اكتب المحتوى هنا',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.publish),
+                label: const Text('نشر'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
