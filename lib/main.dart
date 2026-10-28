@@ -41,15 +41,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
 
-  final actions = const [
-    ('مطالعة', Icons.menu_book_outlined),
-    ('تحميل', Icons.download_for_offline_outlined),
-    ('إشارات', Icons.bookmark_add_outlined),
-    ('تعليقات', Icons.edit_note_outlined),
-    ('اسأل', Icons.lightbulb_outline),
-    ('انشر', Icons.share_outlined),
-  ];
-
+  final List<Map<String, dynamic>> actions = [
+  {'title': 'مطالعة', 'icon': Icons.menu_book_outlined},
+  {'title': 'تحميل', 'icon': Icons.download_for_offline_outlined},
+  {'title': 'مشارك', 'icon': Icons.bookmark_add_outlined},
+  {'title': 'تعليقات', 'icon': Icons.edit_note_outlined},
+  {'title': 'اسأل', 'icon': Icons.lightbulb_outlined},
+  {'title': 'انشر', 'icon': Icons.share_outlined},
+];
  void openAction(String title, IconData icon) {
     if (title == 'اسأل') {
       setState(() => index = 2);
@@ -95,16 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: BorderRadius.circular(20),
               child: InkWell(
                 borderRadius: BorderRadius.circular(20),
-                onTap: () => openAction(a.$1, a.$2),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(a.$2, size: 44, color: const Color(0xFF0E6E9E)),
-                    const SizedBox(height: 12),
-                    Text(
-                      a.$1,
-                      style: const TextStyle(
-                        fontSize: 19,
+              onTap: () => openAction(a['title'], a['icon']),
+child: Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Icon(a['icon'], size: 44, color: const Color(0xFFF8E6E9)),
+    const SizedBox(height: 12),
+    Text(
+      a['title'],
+      style: const TextStyle(  fontSize: 19,
                         color: Color(0xFF145E83),
                         fontWeight: FontWeight.w700,
                       ),
