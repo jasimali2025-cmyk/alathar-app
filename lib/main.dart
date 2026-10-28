@@ -51,22 +51,29 @@ class _HomeScreenState extends State<HomeScreen> {
     ('انشر', Icons.share_outlined),
   ];
 
-  void openAction(String title, IconData icon) {
+ void openAction(String title, IconData icon) {
     if (title == 'اسأل') {
       setState(() => index = 2);
       return;
     }
+
+    if (title == 'انشر' || title == 'تعليقات') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ArticlesPage(),
+        ),
+      );
+      return;
+    }
+
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => Directionality(
-          textDirection: TextDirection.rtl,
-          child: SimplePage(title: title, icon: icon),
-        ),
+        builder: (context) => SimplePage(title: title, icon: icon),
       ),
     );
   }
-
   Widget library() {
     return ListView(
       padding: const EdgeInsets.all(18),
