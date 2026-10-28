@@ -1,8 +1,7 @@
-import 'articles_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
- Future<void> main() async {
+import 'articles_page.dart';
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
